@@ -11,7 +11,8 @@ jobs:
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the Docker image tag below to openjdk version of your application.
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/openjdk
-   
+    working_directory: ~/target/test-classes # directory where steps will run
+ 
     docker:
       - image: cimg/openjdk:11.0
     # Add steps to the job
@@ -21,6 +22,7 @@ jobs:
       
       - checkout
       # Use mvn clean and package as the standard maven build phase
+       
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
@@ -30,7 +32,7 @@ jobs:
           command: mvn test
 
       - store_test_results:
-         path: test-output/testng-results.xml
+         path: test-output/testng-results
 
       - run:
           name: Get API token
