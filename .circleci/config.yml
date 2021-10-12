@@ -11,7 +11,7 @@ jobs:
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the Docker image tag below to openjdk version of your application.
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/openjdk
-  
+    working_directory: D:/Eclipse/Workspace/XrayResultImporting/target/test-classes # directory where steps will run  
     docker:
       - image: cimg/openjdk:11.0
     # Add steps to the job
@@ -30,7 +30,7 @@ jobs:
           command: mvn test
 
       - store_test_results:
-         path: D:/Eclipse/Workspace/XrayResultImporting/test-output/testng-results.xml
+         path: test-output/testng-results.xml
 
       - run:
           name: Get API token
@@ -38,7 +38,7 @@ jobs:
             echo export token=$(curl -H "Content-Type: application/json" -X POST --data "{ \"client_id\": \"$client_id\",\"client_secret\": \"$client_secret\" }" https://xray.cloud.xpand-it.com/api/v1/authenticate| tr -d '"') >> $BASH_ENV
             source $BASH_ENV
  
-      - run: 'curl -H "Content-Type: text/xml" -H "Authorization: Bearer $token" --data @D:/Eclipse/Workspace/XrayResultImporting/test-output/testng-results.xml  "https://xray.cloud.xpand-it.com/api/v1/import/execution/junit?projectKey=DEM"'
+      - run: 'curl -H "Content-Type: text/xml" -X POST -H "Authorization: Bearer $token"  --data @"testng-results.xml" https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
 
          
       # Invoke jobs via workflows
