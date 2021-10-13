@@ -41,8 +41,8 @@ jobs:
             source $BASH_ENV
  
       #- run: 'curl -H "Content-Type: text/xml" -X POST -H "Authorization: Bearer $token"  --data @result.xml "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
-      - run: 'curl -H "Content-Type: text/xml" -H "Authorization: Bearer $token" --data @result.xml  "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
-
+      #- run: 'curl -H "Content-Type: text/xml" -H "Authorization: Bearer $token" --data @result.xml  "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
+      - run : 'curl -H "Content-Type: text/xml" -X POST -H "Authorization: Bearer $token"  --data @result.xml "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
          
       # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
