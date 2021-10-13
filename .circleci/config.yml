@@ -11,18 +11,14 @@ jobs:
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the Docker image tag below to openjdk version of your application.
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/openjdk
-    working_directory: ~/src/test/java # directory where steps will run
- 
     docker:
       - image: cimg/openjdk:11.0
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       # Checkout the code as the first step.
-      
       - checkout
       # Use mvn clean and package as the standard maven build phase
-       
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
@@ -31,25 +27,10 @@ jobs:
           name: Test
           command: mvn test
 
-      - store_test_results:
-         path: result.xml 
-
-      - run:
-          name: Get API token
-          command: |
-            echo export token=$(curl -H "Content-Type: application/json" -X POST --data "{ \"client_id\": \"$client_id\",\"client_secret\": \"$client_secret\" }" https://xray.cloud.xpand-it.com/api/v1/authenticate| tr -d '"') >> $BASH_ENV
-            source $BASH_ENV
- 
-      #- run: 'curl -H "Content-Type: text/xml" -X POST -H "Authorization: Bearer $token"  --data @result.xml "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
-      #- run: 'curl -H "Content-Type: text/xml" -H "Authorization: Bearer $token" --data @result.xml  "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
-      - run : 'curl -H "Content-Type: text/xml" -X POST -H "Authorization: Bearer $token"  --data @result.xml "https://xray.cloud.getxray.app/api/v1/import/execution/testng?projectKey=DEM"'
-         
-      # Invoke jobs via workflows
+# Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   sample: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
-
-      
